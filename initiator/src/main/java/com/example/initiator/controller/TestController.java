@@ -5,8 +5,15 @@ import com.oracle.microtx.springboot.lra.annotation.AfterLRA;
 import com.oracle.microtx.springboot.lra.annotation.LRA;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import static com.oracle.microtx.springboot.lra.annotation.LRA.LRA_HTTP_CONTEXT_HEADER;
@@ -17,6 +24,10 @@ import static com.oracle.microtx.springboot.lra.annotation.LRA.LRA_HTTP_CONTEXT_
 public class TestController {
 
     private final AppProperties appProperties;
+
+    @Autowired
+    @Qualifier("MicroTxLRA")
+    RestTemplate restTemplate;
 
     @PostMapping("/start-lra/{pattern}")
     @LRA(value = LRA.Type.REQUIRES_NEW)
@@ -33,7 +44,7 @@ public class TestController {
         return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/after-lra")
+    @PutMapping("/after-lra")
     @AfterLRA
     public ResponseEntity<?> afterLra(
             @RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId,
@@ -45,14 +56,12 @@ public class TestController {
     }
 
     private void callParticipant1(String pattern) {
-        RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(
                 appProperties.getParticipant1Url() + "/" + pattern, null, String.class);
         log.info("Participant1 called: {}", response);
     }
 
     private void callParticipant2(String pattern) {
-        RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(
                 appProperties.getParticipant2Url() + "/" + pattern, null, String.class);
         log.info("Participant2 called: {}", response);

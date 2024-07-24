@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class TestController {
         return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/complete")
+    @PutMapping("/complete")
     @Complete
     public ResponseEntity<?> complete(
             @RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId) {
@@ -45,7 +46,7 @@ public class TestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/compensate")
+    @PutMapping("/compensate")
     @Compensate
     public ResponseEntity<?> compensate(
             @RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId) {

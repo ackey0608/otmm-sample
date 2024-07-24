@@ -1,10 +1,12 @@
+version: "3.9"
+
 services:
   otmm:
     image: container-registry.oracle.com/database/otmm:latest
     ports:
       - "9000:9000"
     volumes:
-      - ./otmm/tcs.yaml:/tcs.yaml
+      - ./otmm/tcs-compose.yaml:/tcs.yaml
     environment:
       - CONFIG_FILE=/tcs.yaml
 
@@ -14,10 +16,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://otmm:9000/api/v1/lra-coordinator
       - SPRING_MICROTX_LRA_PARTICIPANTURL=http://initiator:8080
-      - APP_PARTICIPANT1_URL=http://participant1:8081
-      - APP_PARTICIPANT2_URL=http://participant2:8082
+      - APP_PARTICIPANT1URL=http://participant1:8081/test-api
+      - APP_PARTICIPANT2URL=http://participant2:8082/test-api
 
   participant1:
     build:
@@ -25,7 +27,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://otmm:9000/api/v1/lra-coordinator
       - SPRING_MICROTX_LRA_PARTICIPANTURL=http://participant1:8081
 
   participant2:
@@ -34,7 +36,7 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://otmm:9000/api/v1/lra-coordinator
       - SPRING_MICROTX_LRA_PARTICIPANTURL=http://participant2:8082
 
 # for EE
@@ -43,10 +45,6 @@ services:
 #    ports:
 #      - "9000:9000"
 #    volumes:
-#      - ./otmm/tcs.yaml:/tcs.yaml
+#      - ./otmm/tcs-compose.yaml.yaml:/tcs.yaml
 #    environment:
 #      - CONFIG_FILE=/tcs.yaml
-#
-#  otmm-console:
-#    image: container-registry.oracle.com/database/microtx-ee-console:latest
-
