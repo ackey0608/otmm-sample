@@ -1,0 +1,40 @@
+tmmAppName: tcs
+tmmConfiguration:
+  initContainerEnabled : false
+  listenAddr: 0.0.0.0:9000
+  internalAddr: http://localhost:9000
+  externalUrl: http://otmm:9000
+  serveTLS:
+    enabled: false # default
+  skipVerifyInsecureTLS: false
+  notificationSpikeTimeInSec: 5
+  xaCoordinator:
+    enabled: true
+    txMaxTimeout: 600000
+  lraCoordinator:
+    enabled: true
+  tccCoordinator:
+    enabled: true
+  maxRetryCount: 10
+  minRetryInterval: 1000
+  maxRetryInterval: 10000
+  httpClientTimeoutInSecs: 180
+  logging:
+    httpTraceEnabled: true
+    level: debug
+    devMode: true
+  storage:
+    type: memory
+  authorization:
+    enabled: false
+  narayanaLraCompatibilityMode:
+    enabled: false
+authentication:
+  enabled: false
+encryption:
+  secretKeys:
+  EncryptionSecretKeyVersion:
+transactionToken:
+  transactionTokenEnabled: false
+  keyPairs:
+  transactionTokenKeyPairVersion:
