@@ -13,18 +13,29 @@ services:
       context: initiator
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_PARTICIPANTURL=http://initiator:8080
+      - APP_PARTICIPANT1_URL=http://participant1:8081
+      - APP_PARTICIPANT2_URL=http://participant2:8082
 
   participant1:
     build:
       context: participant1
     ports:
       - "8081:8081"
-  
+    environment:
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_PARTICIPANTURL=http://participant1:8081
+
   participant2:
     build:
       context: participant2
     ports:
       - "8082:8082"
+    environment:
+      - SPRING_MICROTX_LRA_COORDINATORURL=http://ottm:9000/api/v1/lra-coordinator
+      - SPRING_MICROTX_LRA_PARTICIPANTURL=http://participant2:8082
 
 # for EE
 #  otmm:

@@ -1,9 +1,10 @@
 FROM openjdk:17-alpine
 
-RUN ./gradlew bootJar --no-daemon
-
-RUN mkdir /app
-COPY src/build/libs/*.jar /app/
+WORKDIR /app-build
+ADD . .
+RUN mkdir /app \
+&& sh ./gradlew bootJar --no-daemon \
+&& cp ./build/libs/*.jar /app/
 
 EXPOSE 8080
 WORKDIR /app
