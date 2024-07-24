@@ -1,0 +1,41 @@
+services:
+  otmm:
+    image: container-registry.oracle.com/database/otmm:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./otmm/tcs.yaml:/tcs.yaml
+    environment:
+      - CONFIG_FILE=/tcs.yaml
+
+  initiator:
+    build:
+      context: initiator
+    ports:
+      - "8080:8080"
+
+  participant1:
+    build:
+      context: participant1
+    ports:
+      - "8081:8081"
+  
+  participant2:
+    build:
+      context: participant2
+    ports:
+      - "8082:8082"
+
+# for EE
+#  otmm:
+#    image: container-registry.oracle.com/database/microtx-ee-coordinator:latest
+#    ports:
+#      - "9000:9000"
+#    volumes:
+#      - ./otmm/tcs.yaml:/tcs.yaml
+#    environment:
+#      - CONFIG_FILE=/tcs.yaml
+#
+#  otmm-console:
+#    image: container-registry.oracle.com/database/microtx-ee-console:latest
+

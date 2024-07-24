@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: initiator
+  microtx:
+    lra:
+      coordinator-url: http://localhost:9000/api/v1/lra-coordinator
+      propagation-active: true
+      participant-url: http://localhost:${server.port}
+      headers-propagation-prefix: {x-b3-, oracle-tmm-, authorization, refresh-}
+
+app:
+  participant1-url: http://localhost:8081/test-api
+  participant2-url: http://localhost:8082/test-api
